@@ -106,7 +106,8 @@ def db_assigned_keyword_id(n):
     current_database = read_yml('database')[0]
     mydb = sqlite3.connect(current_database)
     cursor = mydb.cursor()
-    excute_sen = "select id from tag where name is '%s';" % n
+    # excute_sen = "select id from tag where name is '%s';" % n
+    excute_sen = "select Id from Keyword where Name is '%s';" % n
     cursor.execute(excute_sen)
     tables = cursor.fetchall()
     keyword_id = tables[0][0]
