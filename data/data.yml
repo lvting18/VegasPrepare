@@ -1,0 +1,199 @@
+# in computer which is never use Vegas Prepare, should launch it once and close it.
+# todo: how to change build version automatically?
+build: C:\Users\Blair\Desktop\[Build#233]\VEGAS Prepare.exe
+configure_ini:
+- C:\Users\Blair\AppData\Roaming\DMAM\Config\Config.ini
+- E:\AutomationTest\iniFiles\Config.ini
+database:
+- C:\Users\Blair\AppData\Roaming\DMAM\database\DMAMDATA
+- E:\AutomationTest\iniFiles\DMAMDATA
+target_partition: F:\
+import_target: F:\AutoTarget_Build#226
+screenshot_path: E:\Screenshot
+TestImport:
+  test_view_group_sort:
+    source:
+    - 'E:'
+  test_source_mtp:
+    source:
+    - Apple iPhone
+  test_source_removable_disk:
+    # fill the source path after plug in removable disk
+    source:
+    - xxxxx
+  test_source_network_drive:
+    # fill the source path after connect network drive
+    source:
+    - xxxxx
+  test_source_empty_folder:
+    source:
+    - E:\AutomationTest\TestImport\empty
+  test_source_multifile:
+    source:
+    - E:\AutomationTest\TestImport\Source1
+    - E:\AutomationTest\Personal Album\2018_2019_乐高
+  test_source_wholefolder:
+    source:
+    - E:\AutomationTest\TestImport\picture
+    - E:\AutomationTest\TestImport\video
+    - E:\AutomationTest\TestImport\audio
+    NewTarget:
+    - picture
+    - video
+    - audio
+  test_source_large:
+    source:
+    - E:\AutomationTest\TestImport\1wFiles
+  test_import_to_existing_target:
+    source:
+    - E:\AutomationTest\TestImport\Source1
+    - E:\AutomationTest\Personal Album\20191007_1013_太子湾_动物园
+    target:
+    - F:\AutoTarget_Build#226\target1
+    - F:\AutoTarget_Build#226\target2
+TestLibrary:
+  test_add_root_folder:
+    folder:
+    - E:\AutomationTest\TestImported\empty
+    - E:\AutomationTest\TestImported\source
+  test_create_folder_multi_lan:
+    NewFolderName:
+    - 测试
+    -  اختبر
+    - zkouška
+    - テスト
+    - 시험 하 다.
+  test_create_folder_failed:
+    folderName:
+    - '    '
+    - 'abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz'
+    - \
+    - /
+    - ':'
+    - '*'
+    - '?'
+    - '"'
+    - '<'
+    - '>'
+    - '|'
+    err:
+      - 'Name is empty'
+      - 'File Name is too long'
+      - "A folder name can't contain any of the following characters:"
+      - "A folder name can't contain any of the following characters:"
+      - "A folder name can't contain any of the following characters:"
+      - "A folder name can't contain any of the following characters:"
+      - "A folder name can't contain any of the following characters:"
+      - "A folder name can't contain any of the following characters:"
+      - "A folder name can't contain any of the following characters:"
+      - "A folder name can't contain any of the following characters:"
+      - "A folder name can't contain any of the following characters:"
+  test_rename_failed:
+    folderName:
+    - '    '
+    - 'abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz'
+    - \
+    - /
+    - ':'
+    - '*'
+    - '?'
+    - '"'
+    - '<'
+    - '>'
+    - '|'
+    err:
+      - 'Name is empty'
+      - 'File Name is too long'
+      - 'Rename failed, due to unsupported characters:'
+      - 'Rename failed, due to unsupported characters:'
+      - 'Rename failed, due to unsupported characters:'
+      - 'Rename failed, due to unsupported characters:'
+      - 'Rename failed, due to unsupported characters:'
+      - 'Rename failed, due to unsupported characters:'
+      - 'Rename failed, due to unsupported characters:'
+      - 'Rename failed, due to unsupported characters:'
+      - 'Rename failed, due to unsupported characters:'
+TestCollections:
+  test_create_collection_set:
+    collectionSet:
+      - 测试
+      -  اختبر
+      - zkouška
+      - 'テスト'
+      - '시험 하 다.'
+  test_create_collection_set_failed:
+    collectionSet:
+      - '    '
+      - 'abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz'
+      - \
+      - /
+      - ':'
+      - '*'
+      - '?'
+      - '"'
+      - '<'
+      - '>'
+      - '|'
+    err:
+      - 'name is empty'
+      - 'File Name is too long'
+      - 'Create failed, due to unsupported characters:'
+      - 'Create failed, due to unsupported characters:'
+      - 'Create failed, due to unsupported characters:'
+      - 'Create failed, due to unsupported characters:'
+      - 'Create failed, due to unsupported characters:'
+      - 'Create failed, due to unsupported characters:'
+      - 'Create failed, due to unsupported characters:'
+      - 'Create failed, due to unsupported characters:'
+      - 'Create failed, due to unsupported characters:'
+  test_create_collection_failed:
+    collection:
+      - '    '
+      - 'abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz'
+      - \
+      - /
+      - ':'
+      - '*'
+      - '?'
+      - '"'
+      - '<'
+      - '>'
+      - '|'
+    err:
+      - 'name is empty'
+      - 'File Name is too long'
+      - 'Create failed, due to unsupported characters:'
+      - 'Create failed, due to unsupported characters:'
+      - 'Create failed, due to unsupported characters:'
+      - 'Create failed, due to unsupported characters:'
+      - 'Create failed, due to unsupported characters:'
+      - 'Create failed, due to unsupported characters:'
+      - 'Create failed, due to unsupported characters:'
+      - 'Create failed, due to unsupported characters:'
+      - 'Create failed, due to unsupported characters:'
+  test_rename_collection:
+    collectionName:
+      - default
+      - 测试
+      -  اختبر
+      - zkouška
+      - 'テスト'
+      - '시험 하 다.'
+  test_rename_collection_failed:
+    collectionName:
+      - '    '
+      - 'abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz'
+      - '*'
+    err:
+      - 'name is empty'
+      - 'File Name is too long'
+      - 'Create failed, due to unsupported characters:'
+  test_rename_collection_set_failed:
+    collectionSetName:
+      - '    '
+      - 'abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz'
+      - '?'
+    err:
+      - 'name is empty'
+      - 'File Name is too long'
+      - 'Create failed, due to unsupported characters:'
