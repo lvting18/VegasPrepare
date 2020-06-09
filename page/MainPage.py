@@ -313,8 +313,8 @@ class MainPage(BasePage):
         self.find(By.XPATH, "//ComboBox[contains(@AutomationId, 'SetCombobox')]").click()
         ActionChains(self.driver).key_down(Keys.ARROW_DOWN).key_down(Keys.ARROW_DOWN).key_down(Keys.ENTER).perform()
         self.find(By.XPATH, "//Button[contains(@AutomationId, 'okbutton')]").click()
-        # 因为只往下移了一位，只要在数据库里找到第一个collection set，就是目标set
-        target_id = vm.db_random('collection_set', '1')[-1]
+        # 因为往下移了2位，在数据库里找到第二个collection set，就是目标set
+        target_id = vm.db_random('collection_set', '2')[-1]
         return target_id
 
     def move_collection_set(self, moved):
