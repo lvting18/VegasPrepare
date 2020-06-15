@@ -54,35 +54,32 @@ class TestImport(object):
     @pytest.mark.skip(reason='no mtp device')
     @pytest.mark.parametrize(("s",), _test_source_mtp)
     def test_source_mtp(self, s):
-        self.ImportPage.SelectMTP(s)
+        s_number = self.ImportPage.SelectMTP(s).GetSelectedFilesNumber()
         t = self.ImportPage.NewTargetFolder(self._ini_target)
         self.ImportPage.ClickImport()
-        assert self.ImportPage.IsImporting() is True
+        assert self.ImportPage.IsImportDialogOpen() is True
         self.ImportPage.WaitingImportFinish()
         self.ImportPage.CloseImportDialog()
-        assert vm.compare_files(s, t)
+        assert vm.get_file_number(t) == s_number
 
-    @pytest.mark.skip(reason='no removable disk')
+    # @pytest.mark.skip(reason='no removable disk')
     @pytest.mark.parametrize(("s",), _test_source_removable_disk)
     def test_source_removable_disk(self, s):
-        self.ImportPage.SelectSourceFolder(s)
+        s_number = self.ImportPage.SelectSourceFolder(s).GetSelectedFilesNumber()
         t = self.ImportPage.NewTargetFolder(self._ini_target)
         self.ImportPage.ClickImport()
-        assert self.ImportPage.IsImporting() is True
         self.ImportPage.WaitingImportFinish()
         self.ImportPage.CloseImportDialog()
-        assert vm.compare_files(s, t)
+        assert vm.get_file_number(t) == s_number
 
-    @pytest.mark.skip(reason='no network drive')
     @pytest.mark.parametrize(("s",), _test_source_network_drive)
     def test_source_network_drive(self, s):
-        self.ImportPage.SelectSourceFolder(s)
+        s_number = self.ImportPage.SelectSourceFolder(s).GetSelectedFilesNumber()
         t = self.ImportPage.NewTargetFolder(self._ini_target)
         self.ImportPage.ClickImport()
-        assert self.ImportPage.IsImporting() is True
         self.ImportPage.WaitingImportFinish()
         self.ImportPage.CloseImportDialog()
-        assert vm.compare_files(s, t)
+        assert vm.get_file_number(t) == s_number
 
     @allure.description('import empty folder to new target folder, import button is disabled')
     @pytest.mark.parametrize(("s",), _test_source_empty_folder)
@@ -90,47 +87,45 @@ class TestImport(object):
         self.ImportPage.SelectSourceFolder(s)
         self.ImportPage.NewTargetFolder(self._ini_target)
         self.ImportPage.ClickImport()
-        assert self.ImportPage.IsImporting() is False
+        assert self.ImportPage.IsImportDialogOpen() is False
 
     @pytest.mark.parametrize(("s",), _test_source_multifile)
     def test_source_multifile(self, s):
-        self.ImportPage.SelectFile(s)
+        s_number = self.ImportPage.SelectFile(s).GetSelectedFilesNumber()
+        self.ImportPage.GetSelectedFilesNumber()
         t = self.ImportPage.NewTargetFolder(self._ini_target)
         self.ImportPage.ClickImport()
-        assert self.ImportPage.IsImporting() is True
         self.ImportPage.WaitingImportFinish()
         self.ImportPage.CloseImportDialog()
-        assert vm.compare_files(s, t) is False
+        assert vm.get_file_number(t) == s_number
 
     @allure.description('import several files to new target folder')
     @pytest.mark.parametrize(("s", "t"), _test_source_wholefolder)
     def test_source_wholefolder(self, s, t):
-        self.ImportPage.SelectSourceFolder(s)
-        t = self.ImportPage.NewTargetFolder(self._ini_target, target_name=t)
+        s_number = self.ImportPage.SelectSourceFolder(s).GetSelectedFilesNumber()
+        t_path = self.ImportPage.NewTargetFolder(self._ini_target, target_name=t)
         self.ImportPage.ClickImport()
-        assert self.ImportPage.IsImporting() is True
         self.ImportPage.WaitingImportFinish()
         self.ImportPage.CloseImportDialog()
-        assert vm.compare_files(s, t)
+        assert vm.get_file_number(t_path) == s_number
 
     @pytest.mark.parametrize(("s",), _test_source_large)
     def test_source_large(self, s):
-        self.ImportPage.SelectSourceFolder(s)
+        s_number = self.ImportPage.SelectSourceFolder(s).GetSelectedFilesNumber()
         t = self.ImportPage.NewTargetFolder(self._ini_target)
         self.ImportPage.ClickImport()
-        assert self.ImportPage.IsImporting() is True
         self.ImportPage.WaitingImportFinish()
         self.ImportPage.CloseImportDialog()
-        assert vm.compare_files(s, t)
+        assert vm.get_file_number(t) == s_number
 
     @allure.description('import to existing target')
     @pytest.mark.parametrize(("s", "t"), _test_import_to_existing_target)
     def test_import_to_existing_target(self, s, t):
-        self.ImportPage.SelectSourceFolder(s)
+        s_number = self.ImportPage.SelectSourceFolder(s).GetSelectedFilesNumber()
         self.ImportPage.SelectTargetFolder(t)
         self.ImportPage.ClickImport()
         self.ImportPage.WaitingImportFinish()
         self.ImportPage.CloseImportDialog()
-        assert vm.compare_files(s, t)
+        assert vm.get_file_number(t) == s_number
 
 

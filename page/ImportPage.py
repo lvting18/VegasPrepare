@@ -7,6 +7,8 @@ from page.MainPage import MainPage
 import time
 from selenium.webdriver.common.keys import Keys
 import random
+import allure
+import logging
 
 
 class ImportPage(BasePage):
@@ -17,15 +19,18 @@ class ImportPage(BasePage):
         c = self.find(By.XPATH, "//Custom[contains(@AutomationId, 'TargetGridControl')]//Text[contains(@Name, 'C:')]")
         ActionChains(self.driver).double_click(c).perform()
 
-    # Back to mainpage from Import page
+    @allure.step('Back to mainpage from Import page')
     def backtomain(self):
         self.find(By.XPATH, '//Button[contains(@Name, "Close")]').click()
         return MainPage()
 
+    @allure.step('Select MTP device')
     def SelectMTP(self, s_folder):
         self.find(By.XPATH, "//Custom[contains(@AutomationId, 'self')]//Text[contains(@Name, '%s')]" % s_folder).click()
+        self.driver.implicitly_wait(20)
+        return self
 
-    # Select one whole folder as source
+    @allure.step('Select one whole folder as source')
     def SelectSourceFolder(self, s_folder):
         folder_code = 'DMAM.Classes.LocalDirectory'
         s_list = s_folder.split('\\')
@@ -36,21 +41,31 @@ class ImportPage(BasePage):
             # print(s_xpath)
             p = self.find(By.XPATH, s_xpath)
             ActionChains(self.driver).double_click(p).perform()
+        return self
 
-    # Select some files as source
+    @allure.step('Select some files as source')
     def SelectFile(self, s_folder):
         self.SelectSourceFolder(s_folder)
         self.find(By.NAME, 'DMAM.Classes.LocalFile').click()
         i = 0
         j = 0
-        while i < random.randint(1, 5):
+        while i < random.randint(2, 9):
             ActionChains(self.driver).key_down(Keys.SHIFT).key_down(Keys.ARROW_DOWN).key_up(Keys.SHIFT).perform()
             i += 1
-        while j < random.randint(1, 5):
+        while j < random.randint(2, 9):
             ActionChains(self.driver).key_down(Keys.SHIFT).key_down(Keys.ARROW_RIGHT).key_up(Keys.SHIFT).perform()
             j += 1
+        return self
 
-    # Select target folder
+    def GetSelectedFilesNumber(self):
+        selected = self.driver.find_elements_by_xpath(
+            "//Custom[contains(@AutomationId, 'ImportDetailPage')]//Button[contains(@AutomationId, 'PageheaderButton')]")[1].text
+        self.logger().debug(selected)
+        file_number = selected.split()[0]
+        self.logger().debug(file_number)
+        return int(file_number)
+
+    @allure.step('Select target folder')
     def SelectTargetFolder(self, t_folder):
         t_list = t_folder.split('\\')
         for i in t_list:
@@ -58,8 +73,8 @@ class ImportPage(BasePage):
                           "//Custom[contains(@AutomationId, 'TargetGridControl')]//Text[contains(@Name, '%s')]" % i)
             ActionChains(self.driver).double_click(p).perform()
 
-    # New target folder to G:\ as default
-    def NewTargetFolder(self, t_folder='G:', target_name='default'):
+    @allure.step(r"New target folder")
+    def NewTargetFolder(self, t_folder='F:', target_name='default'):
         t_list = t_folder.split('\\')
         # print(t_list)
         for i in t_list:
@@ -77,28 +92,48 @@ class ImportPage(BasePage):
         target_path = "\\".join(t_list)
         return target_path
 
+    @allure.step('Click Import button')
     def ClickImport(self):
         self.driver.find_element_by_accessibility_id('importbutton').click()
 
-    def IsImporting(self):
-        if self.driver.find_elements_by_accessibility_id('OKButton'):
+    @allure.step('Judge if it is importing')
+    def IsImportDialogOpen(self):
+        i = (By.XPATH, "//Custom[contains(@AutomationId, 'ImportFilesProgressPage')]")
+        try:
+            WebDriverWait(self.driver, 3).until(EC.visibility_of_element_located(i))
             return True
-        else:
+        except:
             return False
 
+    @allure.step('Waiting for importing finished')
     def WaitingImportFinish(self):
         # wait until import finished dialog pop up
-        WebDriverWait(self.driver, 3600, 1).until(
-            EC.visibility_of_element_located((By.NAME, 'Go to library')))
+        for i in range(600):
+            try:
+                WebDriverWait(self.driver, 3).until(EC.visibility_of_element_located((By.NAME, 'Go to library')))
+                self.logger().debug('Import successfully')
+                break
+            except:
+                self.logger().debug('Not find Go to library')
+                try:
+                    WebDriverWait(self.driver, 3).until(EC.visibility_of_element_located((By.NAME, 'Retry')))
+                    self.logger().debug('Import failed')
+                    break
+                except:
+                    self.logger().debug('Not find Gotolibrary and Retry')
+                    continue
 
+    @allure.step('Close Import dialog, stay at Import page')
     def CloseImportDialog(self):
         self.find(By.XPATH, "//Custom[contains(@AutomationId, 'ImportFilesResponsePage')]"
                             "//Button[contains(@AutomationId, 'OKButton')]").click()
 
+    @allure.step('Click Go to library button of Import dialog')
     def GoToLibrary(self):
         self.find(By.XPATH, "//Custom[contains(@AutomationId, 'ImportFilesResponsePage')]"
                             "//Button[contains(@AutomationId, 'GoToButton')]").click()
 
+    @allure.step('Change view')
     def ChangeView(self, view='all'):
         all_views = ['ViewbyList', 'ViewbySmall', 'ViewbyMedium', 'ViewbyLarge']
         random.shuffle(all_views)
@@ -110,6 +145,7 @@ class ImportPage(BasePage):
                                 "//Button[contains(@AutomationId, 'ViewbyButton')]").click()
             self.driver.find_element_by_accessibility_id(viewby).click()
 
+    @allure.step('Change group')
     def ChangeGroup(self, group='all'):
         all_groups = ['GroupbyNone', 'GroupbyDate', 'GroupbyType']
         random.shuffle(all_groups)
@@ -121,6 +157,7 @@ class ImportPage(BasePage):
                                 "//Button[contains(@AutomationId, 'GroupbyButton')]").click()
             self.driver.find_element_by_accessibility_id(groupby).click()
 
+    @allure.step('Change sort')
     def ChangeSort(self, sort='all'):
         all_sorts = ['SortbyName', 'SortbyDate', 'SortbyFolder', 'SortbyType', 'SortbySize']
         random.shuffle(all_sorts)

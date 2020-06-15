@@ -10,6 +10,7 @@ import win32gui
 import sys
 from selenium.webdriver.support import expected_conditions as EC
 import logging
+import glob
 
 
 # 先获取日志name
@@ -47,6 +48,17 @@ def compare_files(source_path, target_path):
     else:
         logger.info('FILES ARE DIFFERENT!')
         return False
+
+
+def get_file_number(path):
+    ini_path = path + r'\*'
+    n = len(glob.glob(ini_path))
+    logger.debug(n)
+    return n
+
+
+if __name__ == '__main__':
+    get_file_number(r'F:\AutoTarget_Build#239_20200610_145136\target_20200610_144352')
 
 
 def read_yml(key):
@@ -313,10 +325,6 @@ def new_db_random(s_type, n='random'):
         random_path.append(random_id)
         logger.debug(random_path)
         return random_path
-
-
-if __name__ == '__main__':
-    new_db_random('collection_set')
 
 
 # move collection set

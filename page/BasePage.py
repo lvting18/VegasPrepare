@@ -7,6 +7,7 @@ from driver.Client import WinClient
 import yaml
 import re
 import shutil
+import logging
 
 
 class BasePage(object):
@@ -67,3 +68,22 @@ class BasePage(object):
         for i in range(3):
             element = self.driver.find_element(by, value)
             return element
+
+    def logger(self):
+        logger = logging.getLogger(__name__)
+        # 全局定义最低级别
+        logger.setLevel(level=logging.DEBUG)
+        # 文件输出信息级别
+        handler = logging.FileHandler("log.txt")
+        handler.setLevel(logging.DEBUG)
+        # 屏幕输出信息级别
+        console = logging.StreamHandler()
+        console.setLevel(logging.DEBUG)
+        # add formatter
+        formatter = logging.Formatter('%(asctime)s - %(module)s:%(funcName)s:%(lineno)d - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        console.setFormatter(formatter)
+        # add to logger
+        logger.addHandler(handler)
+        logger.addHandler(console)
+        return logger
